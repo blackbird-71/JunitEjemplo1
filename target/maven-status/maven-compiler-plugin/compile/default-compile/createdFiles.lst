@@ -1,0 +1,3 @@
+org/oscar/junit5/ejemplos/models/Cuenta.class
+org/oscar/junit5/ejemplos/exceptions/DineroInsuficienteException.class
+org/oscar/junit5/ejemplos/models/Banco.class
