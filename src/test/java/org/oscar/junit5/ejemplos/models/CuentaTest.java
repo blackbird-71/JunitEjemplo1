@@ -1,5 +1,7 @@
 package org.oscar.junit5.ejemplos.models;
 
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.oscar.junit5.ejemplos.exceptions.DineroInsuficienteException;
 
@@ -10,18 +12,20 @@ import static org.junit.jupiter.api.Assertions.*;
 class CuentaTest {
 
     @Test
+    @DisplayName("Probando el nombre de la cuenta corriente")
     void testNombreCuenta() {
         Cuenta cuenta = new Cuenta("Andres", new BigDecimal("1000.12345"));
 
         String esperado = "Andres";
         String real = cuenta.getPersona();
 
-        assertNotNull(real, ()->"La cuenta no puede ser nula");
-        assertEquals(esperado, real, ()->"El nombre de la cuenta no es el que se esperaba");
-        assertTrue(real.equals("Andres"), ()->"Nombre cuenta esperada debe ser igual a la real");
+        assertNotNull(real, () -> "La cuenta no puede ser nula");
+        assertEquals(esperado, real, () -> "El nombre de la cuenta no es el que se esperaba");
+        assertTrue(real.equals("Andres"), () -> "Nombre cuenta esperada debe ser igual a la real");
     }
 
     @Test
+    @DisplayName("Probando el saldo de la cuenta corriente, que no sea null, mayor que cero, valor esperado.")
     void testSaldoCuenta() {
         Cuenta cuenta = new Cuenta("Andres", new BigDecimal("1000.12345"));
 
@@ -32,6 +36,7 @@ class CuentaTest {
     }
 
     @Test
+    @DisplayName("Testeando referencias que sean iguales con el metodo equals.")
     void testReferenciaCuenta() {
         Cuenta cuenta1 = new Cuenta("Andres", new BigDecimal("1000.12345"));
         Cuenta cuenta2 = new Cuenta("Andres", new BigDecimal("1000.12345"));
@@ -83,7 +88,10 @@ class CuentaTest {
     }
 
     @Test
+    @Disabled
+    @DisplayName("Probando relaciones entre las cuentas y el banco con assertAll")
     void testRelacionBancoCuentas() {
+        fail();
         Cuenta cuenta1 = new Cuenta("Jhon Doe", new BigDecimal("2500"));
         Cuenta cuenta2 = new Cuenta("Andres", new BigDecimal("1500.8989"));
 
@@ -100,15 +108,15 @@ class CuentaTest {
                 () -> assertEquals(2, banco.getCuentas().size()),
                 () -> assertEquals("Banco del estado", cuenta1.getBanco().getNombre()),
                 () -> assertEquals("Andres", banco.getCuentas().stream()
-                            .filter(c -> c.getPersona().equals("Andres"))
-                            .findFirst()
-                            .get().getPersona()),
+                        .filter(c -> c.getPersona().equals("Andres"))
+                        .findFirst()
+                        .get().getPersona()),
                 () -> assertEquals("Andres", banco.getCuentas().stream()
-                            .filter(c -> c.getPersona().equals("Andres"))
-                            .findFirst()
-                            .get().getPersona()),
+                        .filter(c -> c.getPersona().equals("Andres"))
+                        .findFirst()
+                        .get().getPersona()),
                 () -> assertTrue(banco.getCuentas().stream()
-                            .anyMatch(c -> c.getPersona().equals("Jhon Doe")))
+                        .anyMatch(c -> c.getPersona().equals("Jhon Doe")))
         );
 
     }
