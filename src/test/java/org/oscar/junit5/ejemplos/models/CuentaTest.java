@@ -1,13 +1,15 @@
 package org.oscar.junit5.ejemplos.models;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.*;
 import org.oscar.junit5.ejemplos.exceptions.DineroInsuficienteException;
 
 import java.math.BigDecimal;
+import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CuentaTest {
 
     Cuenta cuenta;
@@ -24,12 +26,12 @@ class CuentaTest {
     }
 
     @BeforeAll
-    void beforeAll() {
+    static void beforeAll() {
         System.out.println("Inicializando el test");
     }
 
     @AfterAll
-    void afterAll() {
+    static void afterAll() {
         System.out.println("Finalizando el test");
     }
 
@@ -134,5 +136,66 @@ class CuentaTest {
                         .anyMatch(c -> c.getPersona().equals("Jhon Doe")))
         );
 
+    }
+
+    @Test
+    @EnabledOnOs(OS.WINDOWS)
+    void testSoloWindows(){
+    }
+
+    @Test
+    @EnabledOnOs({OS.LINUX,OS.MAC})
+    void testSoloLinuxMac(){
+    }
+
+    @Test
+    @DisabledOnOs(OS.WINDOWS)
+    void testNoWindows() {
+    }
+
+    @Test
+    @EnabledOnJre(JRE.JAVA_8)
+    void soloJDK8() {
+    }
+
+    @Test
+    @EnabledOnJre(JRE.JAVA_15)
+    void soloJDK15() {
+    }
+
+    @Test
+    @DisabledOnJre(JRE.JAVA_15)
+    void testNoJDK15() {
+    }
+
+    @Test
+    void imprimirSystemProperties() {
+        Properties properties = System.getProperties();
+        properties.forEach((k,v)->System.out.println(k+":"+v));
+    }
+
+    @Test
+    @EnabledIfSystemProperty(named="java.version", matches=".*11.*")
+    void testJavaVersion(){
+    }
+
+    @Test
+    @DisabledIfSystemProperty(named="os.arch", matches=".*32.*")
+    void testSolo64() {
+    }
+
+    @Test
+    @EnabledIfSystemProperty(named="os.arch", matches=".*32.*")
+    void testNO64() {
+    }
+
+    @Test
+    @EnabledIfSystemProperty(named="user.name", matches="oscar")
+    void testUserName() {
+    }
+
+    @Test
+    @EnabledIfSystemProperty(named="ENV", matches="dev")
+    void testDev() {
     }
 }
