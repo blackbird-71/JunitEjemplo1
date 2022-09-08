@@ -39,7 +39,7 @@ class CuentaTest {
 
     @Nested
     @DisplayName("Probando atributos de la cuenta corriente")
-    class CuentaTestNombreSaldo{
+    class CuentaTestNombreSaldo {
         @Test
         @DisplayName("El nombre de la cuenta corriente")
         void testNombreCuenta() {
@@ -71,7 +71,7 @@ class CuentaTest {
     }
 
     @Nested
-    class CuentaOperacionesTest{
+    class CuentaOperacionesTest {
         @Test
         void testDebitoCuenta() {
             cuenta.debito(new BigDecimal("100"));
@@ -268,5 +268,18 @@ class CuentaTest {
         });
         assertFalse(cuenta.getSaldo().compareTo(BigDecimal.ZERO) < 0);
         assertTrue(cuenta.getSaldo().compareTo(BigDecimal.ZERO) > 0);
+    }
+
+    @DisplayName("Probando Debito Cuenta Repetir")
+    @RepeatedTest(value = 5, name = "{displayName} - Repetición número {currentRepetition} de {totalRepetitions}")
+    void testDebitoCuentaRpetir(RepetitionInfo info) {
+        if (info.getCurrentRepetition() == 3) {
+            System.out.println("Estamos en la repetición " + info.getCurrentRepetition());
+        }
+        cuenta.debito(new BigDecimal("100"));
+
+        assertNotNull(cuenta.getSaldo());
+        assertEquals(900, cuenta.getSaldo().intValue());
+        assertEquals("900.12345", cuenta.getSaldo().toPlainString());
     }
 }
